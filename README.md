@@ -1,0 +1,1 @@
+# text-slide-vue-component
