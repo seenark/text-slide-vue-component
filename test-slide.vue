@@ -1,9 +1,5 @@
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-} from '@nuxtjs/composition-api'
+import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
 export default defineComponent({
   setup() {
     const announce = ref(true)
@@ -17,7 +13,7 @@ export default defineComponent({
       const tx = span.value.scrollWidth - span.value.clientWidth
       return `
         @keyframes scroll-text {
-            10% { transform: translateX(0%); }
+            5% { transform: translateX(0%); }
             80% { transform: translateX(-${tx}px); }
             90% { transform: translateX(-${tx}px); }
             100% { transform: translateX(0%); }
@@ -49,12 +45,6 @@ export default defineComponent({
                     Note: The withdrawal open time is an estimated time for users’ reference. Users can view the actual status on the withdrawal page------------`
       setAnimation()
     })
-
-    // onUpdated(() => {
-    //   span.value?.removeChild(style.value)
-    //   style.value?.innerHTML = keyframe.value
-    //   span.value?.appendChild(style.value)
-    // })
 
     return {
       announce,
@@ -90,17 +80,19 @@ export default defineComponent({
       >
     </div>
     <div ref="div" class="text-box white--text">
+      <div v-if="!$vuetify.theme.dark" style="background: linear-gradient(270deg, rgba(0, 0, 0, 0) 0%, #253832 100%);" class="before"></div>
+      <div v-if="$vuetify.theme.dark" style="background: linear-gradient(270deg, rgba(0, 0, 0, 0) 0%, #32A17F 100%);" class="before"></div>
       <div>
         <span ref="span">{{ text }} </span>
       </div>
+      <div v-if="!$vuetify.theme.dark" style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #253832 100%);" class="after"></div>
+      <div v-if="$vuetify.theme.dark" style="background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #32A17F  100%);" class="after"></div>
     </div>
     <div class="d-flex align-center">
-      <v-btn icon color="announce-title">
+      <v-btn icon color="announce-title" @click="announce = false">
         <v-icon
-          :class="{
-            'character-green--text': $vuetify.theme.dark,
-            'white--text': !$vuetify.theme.dark,
-          }"
+          
+          color="white"
           >mdi-close</v-icon
         >
       </v-btn>
@@ -121,29 +113,45 @@ export default defineComponent({
     display: flex;
     align-items: center;
     div {
-      //   display: flex;
-      //   align-items: center;
-      //   overflow-x: auto;
       overflow: hidden;
       span {
-        display: block;
+        display: flex;
+        align-items: center;
+        height: 44px;
         white-space: nowrap;
-        //   animation: name duration timing-function delay iteration-count direction fill-mode;
-        //   animation: scroll-text 10s linear 5s infinite normal none;
-        //   animation: scroll-text 10s linear 5s normal none;
+        padding: 0 16px;
+
         animation-name: scroll-text;
         animation-iteration-count: infinite;
         animation-duration: 50s;
-        animation-delay: 5s;
+        animation-delay: 0s;
         animation-timing-function: linear;
         animation-direction: normal;
         animation-fill-mode: both;
         animation-play-state: running;
 
         &:hover {
-            animation-play-state: paused;
+          animation-play-state: paused;
         }
       }
+    }
+    .before {
+        z-index: 1;
+      position: absolute;
+      left: 180px;
+      top: 0;
+      height: 44px;
+      width: 44px;
+    //   background: linear-gradient(270deg, rgba(37, 56, 50, 0) 0%, #253832 100%);
+    }
+    .after {
+        z-index: 1;
+      position: absolute;
+      right: 44px;
+      top: 0;
+      height: 44px;
+      width: 44px;
+    //   background: linear-gradient(90deg, rgba(37, 56, 50, 0) 0%, #253832 100%);
     }
 
     // @keyframes scroll-text {
@@ -159,16 +167,6 @@ export default defineComponent({
     //         transform: translateX(0%);
     //     }
     // }
-  }
-}
-
-.hide-scroll {
-  padding-top: 10px;
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    width: 0; /* Remove scrollbar space */
-    background: transparent; /* Optional: just make scrollbar invisible */
   }
 }
 </style>
